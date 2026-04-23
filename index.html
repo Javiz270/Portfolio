@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JAVIER SANTOS — FBC PERSONNEL FILE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --concrete: #1a1a1a;
+      --concrete-light: #2a2929;
+      --concrete-mid: #3a3838;
+      --concrete-pale: #555;
+      --red: #c0392b;
+      --red-bright: #e74c3c;
+      --yellow: #f0c000;
+      --yellow-dim: #a08000;
+      --white: #e8e4dc;
+      --white-dim: #a09d97;
+      --scan: rgba(255,255,255,0.03);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --font-body: 'IBM Plex Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--concrete);
+      color: var(--white);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* SCANLINES OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        var(--scan) 2px,
+        var(--scan) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* NOISE TEXTURE */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.4;
+    }
+
+    /* ─── HEADER / HERO ─── */
+    header {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 6vw;
+      border-bottom: 3px solid var(--red);
+      overflow: hidden;
+    }
+
+    .header-bg-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-display);
+      font-size: clamp(80px, 18vw, 260px);
+      color: rgba(255,255,255,0.025);
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .fbc-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .fbc-label::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 2px;
+      background: var(--red);
+    }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 11vw, 160px);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .hero-name span {
+      color: var(--red);
+    }
+
+    .hero-tagline {
+      font-family: var(--font-mono);
+      font-size: clamp(12px, 1.5vw, 16px);
+      color: var(--white-dim);
+      letter-spacing: 0.15em;
+      max-width: 600px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    .clearance-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      border: 2px solid var(--yellow);
+      padding: 0.6rem 1.4rem;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--yellow);
+      text-transform: uppercase;
+      position: relative;
+    }
+    .clearance-badge::before {
+      content: '▶';
+      font-size: 8px;
+    }
+
+    .corner-stamp {
+      position: absolute;
+      top: 2rem;
+      right: 4vw;
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--concrete-mid);
+      text-align: right;
+      line-height: 2;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      right: 4vw;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--concrete-pale);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: blink 2s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--concrete);
+      border-bottom: 1px solid var(--concrete-mid);
+      padding: 0 6vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+    .nav-id {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--red);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--white-dim);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--yellow); }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 7rem 6vw;
+      border-bottom: 1px solid var(--concrete-mid);
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .section-number {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--red);
+      letter-spacing: 0.2em;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 6vw, 80px);
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--concrete-mid);
+      margin-left: 1rem;
+    }
+
+    /* ─── SOBRE MÍ ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--white-dim);
+      margin-bottom: 1.2rem;
+    }
+    .about-text p strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+    .file-card {
+      background: var(--concrete-light);
+      border: 1px solid var(--concrete-mid);
+      border-top: 3px solid var(--red);
+      padding: 2rem;
+    }
+    .file-card-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      color: var(--red);
+      margin-bottom: 1.5rem;
+    }
+    .file-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--concrete-mid);
+      font-size: 12px;
+    }
+    .file-row:last-child { border-bottom: none; }
+    .file-key {
+      font-family: var(--font-mono);
+      color: var(--concrete-pale);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+    .file-val {
+      color: var(--white);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-align: right;
+    }
+
+    /* ─── PROYECTOS ─── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 2px;
+    }
+    .project-card {
+      background: var(--concrete-light);
+      border: 1px solid var(--concrete-mid);
+      padding: 2rem;
+      position: relative;
+      transition: border-color 0.2s;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--concrete-mid);
+      transition: background 0.2s;
+    }
+    .project-card:hover { border-color: var(--red); }
+    .project-card:hover::before { background: var(--red); }
+
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      color: var(--yellow);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .project-name {
+      font-family: var(--font-display);
+      font-size: 32px;
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+      margin-bottom: 0.7rem;
+    }
+    .project-desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--white-dim);
+      margin-bottom: 1.5rem;
+    }
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .stack-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      padding: 0.3rem 0.6rem;
+      border: 1px solid var(--concrete-mid);
+      color: var(--white-dim);
+      text-transform: uppercase;
+    }
+    .project-status {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--yellow);
+    }
+
+    /* ─── HABILIDADES ─── */
+    .skills-block {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 3rem;
+    }
+    .skill-group-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--concrete-mid);
+    }
+    .skill-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--white-dim);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .skill-bar {
+      width: 80px;
+      height: 3px;
+      background: var(--concrete-mid);
+      position: relative;
+    }
+    .skill-bar-fill {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      background: var(--red);
+    }
+
+    /* ─── CERTS ─── */
+    .certs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .cert-row {
+      background: var(--concrete-light);
+      border: 1px solid var(--concrete-mid);
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      transition: border-color 0.2s;
+    }
+    .cert-row:hover { border-color: var(--concrete-pale); }
+    .cert-icon {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--concrete-pale);
+      width: 40px;
+      flex-shrink: 0;
+    }
+    .cert-info { flex: 1; }
+    .cert-name {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--white);
+      margin-bottom: 0.2rem;
+    }
+    .cert-issuer {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--concrete-pale);
+      letter-spacing: 0.1em;
+    }
+    .cert-status {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid;
+    }
+    .cert-status.done { border-color: var(--yellow); color: var(--yellow); }
+    .cert-status.wip { border-color: var(--concrete-pale); color: var(--concrete-pale); }
+
+    /* ─── HOBBIES ─── */
+    .hobbies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 2px;
+    }
+    .hobby-card {
+      background: var(--concrete-light);
+      border: 1px solid var(--concrete-mid);
+      padding: 2rem;
+      position: relative;
+    }
+    .hobby-icon {
+      font-size: 32px;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .hobby-name {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .hobby-desc {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--white-dim);
+    }
+    .hobby-classified {
+      position: absolute;
+      bottom: 1rem; right: 1rem;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: var(--concrete-mid);
+    }
+
+    /* ─── CONTACTO ─── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+    .contact-big {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 64px);
+      line-height: 1.1;
+      margin-bottom: 2rem;
+    }
+    .contact-big span { color: var(--red); }
+    .contact-note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.9;
+      color: var(--white-dim);
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 2px; }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--concrete-light);
+      border: 1px solid var(--concrete-mid);
+      padding: 1.2rem 1.8rem;
+      text-decoration: none;
+      color: var(--white);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .contact-link:hover { border-color: var(--red); background: var(--concrete-mid); }
+    .contact-link-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--concrete-pale);
+      text-transform: uppercase;
+    }
+    .contact-link-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .contact-link-arrow { color: var(--red); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2rem 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--concrete-pale);
+    }
+
+    /* ─── GLITCH ─── */
+    .glitch {
+      position: relative;
+    }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      color: var(--white);
+    }
+    .glitch::before {
+      left: 2px;
+      color: var(--red);
+      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+      animation: glitch1 4s infinite linear;
+    }
+    .glitch::after {
+      left: -2px;
+      color: #00ccff;
+      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+      animation: glitch2 4s infinite linear;
+    }
+    @keyframes glitch1 {
+      0%, 90%, 100% { transform: none; opacity: 0; }
+      92% { transform: translateX(-3px); opacity: 0.8; }
+      94% { transform: translateX(3px); opacity: 0.8; }
+      96% { transform: none; opacity: 0; }
+    }
+    @keyframes glitch2 {
+      0%, 88%, 100% { transform: none; opacity: 0; }
+      90% { transform: translateX(3px); opacity: 0.7; }
+      92% { transform: translateX(-3px); opacity: 0.7; }
+      94% { transform: none; opacity: 0; }
+    }
+
+    /* ─── REVEAL ANIMATION ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 1.2rem; }
+      .hero-name { font-size: clamp(44px, 14vw, 100px); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<header>
+  <div class="header-bg-text">FBC</div>
+  <div class="corner-stamp">
+    PERSONNEL FILE<br>
+    SANTOS, J. E.<br>
+    ID: JSG-270<br>
+    AGUASCALIENTES, MX
+  </div>
+  <div class="fbc-label">Federal Bureau of Control &nbsp;·&nbsp; Software Development Division</div>
+  <h1 class="hero-name glitch" data-text="JAVIER SANTOS">
+    JAVIER<br><span>SANTOS</span>
+  </h1>
+  <p class="hero-tagline">
+    DESARROLLADOR DE SOFTWARE · IOT & CIBERSEGURIDAD<br>
+    TSU EN TECNOLOGÍAS DE LA INFORMACIÓN<br>
+    UNIVERSIDAD TECNOLÓGICA EL RETOÑO
+  </p>
+  <div class="clearance-badge">CLEARANCE LEVEL: JUNIOR AGENT · ACTIVE</div>
+  <div class="scroll-hint">[ SCROLL TO ACCESS FILE ]</div>
+</header>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <span class="nav-id">JSG-270 // ACTIVE SESSION</span>
+  <ul class="nav-links">
+    <li><a href="#about">Perfil</a></li>
+    <li><a href="#projects">Proyectos</a></li>
+    <li><a href="#skills">Stack</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="#hobbies">Hobbies</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ SOBRE MÍ ══════════ -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-number">01 //</span>
+    <h2 class="section-title">PERFIL</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        Estudiante de <strong>TSU en Desarrollo de Software</strong> en la UTR, Aguascalientes. Me especializo en el cruce entre <strong>IoT, ciberseguridad y desarrollo backend</strong> — áreas donde el software tiene consecuencias físicas reales.
+      </p>
+      <p>
+        Trabajo con microcontroladores, sensores NFC y arquitecturas orientadas a servicios. Actualmente desarrollando <strong>S.A.R.A.</strong>, un sistema de control de acceso IoT para entornos universitarios.
+      </p>
+      <p>
+        Bilingüe (ES/EN), con experiencia en soporte técnico y telecomunicaciones. Busco construir un perfil técnico distintivo donde la seguridad y los sistemas embebidos converjan.
+      </p>
+    </div>
+    <div class="file-card reveal">
+      <div class="file-card-title">// DATOS DE EXPEDIENTE</div>
+      <div class="file-row">
+        <span class="file-key">Nombre</span>
+        <span class="file-val">Javier E. Santos G.</span>
+      </div>
+      <div class="file-row">
+        <span class="file-key">Ubicación</span>
+        <span class="file-val">Aguascalientes, MX</span>
+      </div>
+      <div class="file-row">
+        <span class="file-key">Programa</span>
+        <span class="file-val">TSU · Desarrollo de Software</span>
+      </div>
+      <div class="file-row">
+        <span class="file-key">Institución</span>
+        <span class="file-val">UTR · El Retoño</span>
+      </div>
+      <div class="file-row">
+        <span class="file-key">Cuatrimestre</span>
+        <span class="file-val">5° (En curso)</span>
+      </div>
+      <div class="file-row">
+        <span class="file-key">Foco</span>
+        <span class="file-val">IoT · Ciberseguridad</span>
+      </div>
+      <div class="file-row">
+        <span class="file-key">Idiomas</span>
+        <span class="file-val">ES — EN (Bilingüe)</span>
+      </div>
+      <div class="file-row">
+        <span class="file-key">GitHub</span>
+        <span class="file-val">Javiz270</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROYECTOS ══════════ -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-number">02 //</span>
+    <h2 class="section-title">PROYECTOS</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-status">● ACTIVO</div>
+      <div class="project-tag">// IOT · ACCESO · SEGURIDAD</div>
+      <div class="project-name">S.A.R.A.</div>
+      <p class="project-desc">
+        Sistema de Acceso y Registro Automatizado. Plataforma IoT completa para control de acceso universitario con 3 nodos ESP32, autenticación NFC/RFID, lógica Anti-Passback, API FastAPI (SOA), MySQL y dashboard BI.
+      </p>
+      <div class="project-stack">
+        <span class="stack-tag">ESP32</span>
+        <span class="stack-tag">MicroPython</span>
+        <span class="stack-tag">PN532 NFC</span>
+        <span class="stack-tag">FastAPI</span>
+        <span class="stack-tag">MySQL</span>
+        <span class="stack-tag">APScheduler</span>
+        <span class="stack-tag">SOA</span>
+        <span class="stack-tag">Anti-Passback</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-status">● PROTOTIPO</div>
+      <div class="project-tag">// IOT · HARDWARE</div>
+      <div class="project-name">RFID PROTO</div>
+      <p class="project-desc">
+        Prototipo de sistema de registro RFID con ESP32 y diseño de PCB propio en EasyEDA. Origen del proyecto S.A.R.A. y base de experimentación en hardware embebido.
+      </p>
+      <div class="project-stack">
+        <span class="stack-tag">ESP32</span>
+        <span class="stack-tag">RFID RC522</span>
+        <span class="stack-tag">EasyEDA</span>
+        <span class="stack-tag">PCB Design</span>
+        <span class="stack-tag">MicroPython</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-status">◌ EN PLAN</div>
+      <div class="project-tag">// IOT · RF · LORA</div>
+      <div class="project-name">LORA NET</div>
+      <p class="project-desc">
+        Red de sensores LoRa de largo alcance. Exploración de comunicación RF para IoT sin infraestructura WiFi. Orientado a monitoreo ambiental y telemetría distribuida.
+      </p>
+      <div class="project-stack">
+        <span class="stack-tag">LoRa</span>
+        <span class="stack-tag">ESP32</span>
+        <span class="stack-tag">RF 915MHz</span>
+        <span class="stack-tag">MicroPython</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ STACK ══════════ -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-number">03 //</span>
+    <h2 class="section-title">STACK</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="skills-block">
+    <div class="reveal">
+      <div class="skill-group-title">// HARDWARE & EMBEBIDOS</div>
+      <div class="skill-item"><span>ESP32 / NodeMCU</span><div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div></div>
+      <div class="skill-item"><span>MicroPython</span><div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><span>NFC / RFID (PN532)</span><div class="skill-bar"><div class="skill-bar-fill" style="width:75%"></div></div></div>
+      <div class="skill-item"><span>PCB Design (EasyEDA)</span><div class="skill-bar"><div class="skill-bar-fill" style="width:55%"></div></div></div>
+      <div class="skill-item"><span>LoRa / RF</span><div class="skill-bar"><div class="skill-bar-fill" style="width:40%"></div></div></div>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-title">// BACKEND & DATOS</div>
+      <div class="skill-item"><span>Python / FastAPI</span><div class="skill-bar"><div class="skill-bar-fill" style="width:78%"></div></div></div>
+      <div class="skill-item"><span>MySQL</span><div class="skill-bar"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+      <div class="skill-item"><span>Arquitectura SOA</span><div class="skill-bar"><div class="skill-bar-fill" style="width:65%"></div></div></div>
+      <div class="skill-item"><span>APScheduler</span><div class="skill-bar"><div class="skill-bar-fill" style="width:60%"></div></div></div>
+      <div class="skill-item"><span>REST APIs</span><div class="skill-bar"><div class="skill-bar-fill" style="width:72%"></div></div></div>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-title">// SEGURIDAD & REDES</div>
+      <div class="skill-item"><span>Control de Acceso</span><div class="skill-bar"><div class="skill-bar-fill" style="width:75%"></div></div></div>
+      <div class="skill-item"><span>Anti-Passback Logic</span><div class="skill-bar"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+      <div class="skill-item"><span>Autenticación NFC</span><div class="skill-bar"><div class="skill-bar-fill" style="width:72%"></div></div></div>
+      <div class="skill-item"><span>Redes (CCNA base)</span><div class="skill-bar"><div class="skill-bar-fill" style="width:50%"></div></div></div>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-title">// HERRAMIENTAS</div>
+      <div class="skill-item"><span>Git / GitHub</span><div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><span>Linux (Ubuntu)</span><div class="skill-bar"><div class="skill-bar-fill" style="width:60%"></div></div></div>
+      <div class="skill-item"><span>CUDA / GPU ML</span><div class="skill-bar"><div class="skill-bar-fill" style="width:50%"></div></div></div>
+      <div class="skill-item"><span>Local AI (XTTS, LLMs)</span><div class="skill-bar"><div class="skill-bar-fill" style="width:55%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CERTIFICACIONES ══════════ -->
+<section id="certs">
+  <div class="section-header reveal">
+    <span class="section-number">04 //</span>
+    <h2 class="section-title">CERTIFICACIONES</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="certs-list reveal">
+    <div class="cert-row">
+      <div class="cert-icon">⬡</div>
+      <div class="cert-info">
+        <div class="cert-name">Introduction to IoT</div>
+        <div class="cert-issuer">CISCO NETACAD</div>
+      </div>
+      <div class="cert-status wip">EN PROGRESO</div>
+    </div>
+    <div class="cert-row">
+      <div class="cert-icon">⬡</div>
+      <div class="cert-info">
+        <div class="cert-name">Cybersecurity Essentials</div>
+        <div class="cert-issuer">CISCO NETACAD</div>
+      </div>
+      <div class="cert-status wip">EN PROGRESO</div>
+    </div>
+    <div class="cert-row">
+      <div class="cert-icon">⬡</div>
+      <div class="cert-info">
+        <div class="cert-name">Fundamentos de Ciberseguridad</div>
+        <div class="cert-issuer">GOOGLE · COURSERA</div>
+      </div>
+      <div class="cert-status wip">EN PROGRESO</div>
+    </div>
+    <div class="cert-row">
+      <div class="cert-icon">⬡</div>
+      <div class="cert-info">
+        <div class="cert-name">NDG Linux Essentials</div>
+        <div class="cert-issuer">CISCO NETACAD</div>
+      </div>
+      <div class="cert-status wip">PRÓXIMO</div>
+    </div>
+  </div>
+  <p style="font-family: var(--font-mono); font-size: 10px; color: var(--concrete-pale); margin-top: 1.5rem; letter-spacing: 0.2em;">
+    // ACTUALIZA ESTE BLOQUE CONFORME COMPLETES CADA CERTIFICACIÓN
+  </p>
+</section>
+
+<!-- ══════════ HOBBIES ══════════ -->
+<section id="hobbies">
+  <div class="section-header reveal">
+    <span class="section-number">05 //</span>
+    <h2 class="section-title">HOBBIES</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="hobbies-grid">
+    <div class="hobby-card reveal">
+      <span class="hobby-icon">🛸</span>
+      <div class="hobby-name">DRONES</div>
+      <p class="hobby-desc">
+        Fascinado por los sistemas UAV — vuelo FPV, autonomía, telemetría. Meta a mediano plazo: drones con LoRa y sensores propios.
+      </p>
+      <span class="hobby-classified">// PROYECTO FUTURO</span>
+    </div>
+    <div class="hobby-card reveal">
+      <span class="hobby-icon">📡</span>
+      <div class="hobby-name">LORA / RF</div>
+      <p class="hobby-desc">
+        Comunicaciones de largo alcance sin infraestructura. Redes de sensores autónomos, protocolos RF, telemetría distribuida.
+      </p>
+      <span class="hobby-classified">// EN EXPLORACIÓN</span>
+    </div>
+    <div class="hobby-card reveal">
+      <span class="hobby-icon">🤖</span>
+      <div class="hobby-name">LOCAL AI</div>
+      <p class="hobby-desc">
+        Setups de IA local: LLMs, síntesis de voz (XTTSv2), interfaces de personaje. RTX 2060 como laboratorio de ML.
+      </p>
+      <span class="hobby-classified">// EXPERIMENTAL</span>
+    </div>
+    <div class="hobby-card reveal">
+      <span class="hobby-icon">🔧</span>
+      <div class="hobby-name">HARDWARE HACKING</div>
+      <p class="hobby-desc">
+        Electrónica, diseño de PCB, prototipado. Si tiene pines GPIO, probablemente ya lo conecté a algo.
+      </p>
+      <span class="hobby-classified">// EN CURSO</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACTO ══════════ -->
+<section id="contact">
+  <div class="section-header reveal">
+    <span class="section-number">06 //</span>
+    <h2 class="section-title">CONTACTO</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="reveal">
+      <div class="contact-big">ABRIR<br><span>CANAL</span><br>SEGURO</div>
+      <p class="contact-note">
+        Disponible para proyectos, colaboraciones académicas,<br>
+        prácticas profesionales o simplemente hablar de IoT,<br>
+        ciberseguridad y drones. Respondo en ES o EN.
+      </p>
+    </div>
+    <div class="contact-links reveal">
+      <a class="contact-link" href="mailto:javiersantos0125@gmail.com">
+        <span class="contact-link-label">Email</span>
+        <span class="contact-link-val">javiersantos0125@gmail.com</span>
+        <span class="contact-link-arrow">→</span>
+      </a>
+      <a class="contact-link" href="https://github.com/Javiz270" target="_blank">
+        <span class="contact-link-label">GitHub</span>
+        <span class="contact-link-val">github.com/Javiz270</span>
+        <span class="contact-link-arrow">→</span>
+      </a>
+      <a class="contact-link" href="#" target="_blank">
+        <span class="contact-link-label">LinkedIn</span>
+        <span class="contact-link-val">[ Próximamente ]</span>
+        <span class="contact-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <span>© 2025 JAVIER E. SANTOS G. — TODOS LOS DERECHOS RESERVADOS</span>
+  <span>JSG-270 // FBC-SD // AGS MX</span>
+</footer>
+
+<script>
+  // REVEAL ON SCROLL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // TYPING CURSOR IN NAV
+  const navId = document.querySelector('.nav-id');
+  let visible = true;
+  setInterval(() => {
+    visible = !visible;
+    navId.style.opacity = visible ? '1' : '0.4';
+  }, 800);
+</script>
+</body>
+</html>
